@@ -1,3 +1,5 @@
+import re
+
 print("Ejercicio 1")
 
 num1=20
@@ -115,10 +117,17 @@ class Persona():
     
     @nombre.setter
     def nombre(self,nombre):
-        self.__nombre=nombre
+        while(True):
+            if(re.search("^[a-zA-Z|ñÑ ]+$",nombre)is not None):
+                print("validacion completa")
+                self.__nombre=nombre
+                break
+            else:
+                print("No es posible continuar(caracteres invalidos)")
+                nombre = str(input("Introduce el nombre completo: "))
+
 
     def validar_dni(self):
-        letras = "TRWAGMYFPDXBNJZSQVHLCKE"
         if len(self.__dni)!=9:
             print("DNI incorrecto")
             self.__dni = ""
@@ -144,12 +153,12 @@ class Persona():
     
     
     def mostrar(self):
-        return "Nombre:"+self.nombre+" - Edad:"+str(self.edad)+" - DNI:"+self.dni
+        return "Nombre:"+self.__nombre+" - Edad:"+str(self.edad)+" - DNI:"+self.dni
 
     def esMayorDeEdad(self):
         return self.__edad>=18
     
-p1 =Persona ("Marina",23,"453454567")
+p1 =Persona ("23a",23,"453454567")
 
 
 p1.edad = 30
