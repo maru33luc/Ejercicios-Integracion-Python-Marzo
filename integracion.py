@@ -96,12 +96,20 @@ ingresaEntero2()
 
 print("Ejercicio 6")
 
+class DNIError (Exception):
+    pass
+
+class NombreInvalido(Exception):
+    pass
+
 class Persona():
 
     def __init__(self,nombre="",edad=0,dni=""):
-        self.nombre=nombre
-        self.edad=edad
-        self.dni=dni
+        self.__nombre=nombre
+        self.__edad=edad
+        self.__dni=dni
+        self.validar_dni()
+        self.validarNombre()
     
     @property
     def nombre(self):
@@ -117,26 +125,38 @@ class Persona():
     
     @nombre.setter
     def nombre(self,nombre):
+        self.validarNombre()
+        
+    def validarNombre(self):
         while(True):
-            if(re.search("^[a-zA-Z|ñÑ ]+$",nombre)is not None):
-                print("validacion completa")
-                self.__nombre=nombre
-                break
-            else:
+            try:
+                if(re.search("^[a-zA-Z|ñÑ ]+$",self.__nombre)is not None):
+                    print("validacion completa")
+                    break
+                else:
+                    raise NombreInvalido
+            except NombreInvalido as e:
                 print("No es posible continuar(caracteres invalidos)")
-                nombre = str(input("Introduce el nombre completo: "))
-
+                self.__nombre = str(input("Introduce el nombre completo: "))    
 
     def validar_dni(self):
-        if len(self.__dni)!=9:
-            print("DNI incorrecto")
-            self.__dni = ""
-        else:
-           try:
-               num= int(self.__dni)
-           except:
-               print("DNI Incorrecto")
-               self.__dni = "" 
+        while(True):
+            try:
+                if len(self.__dni)!=9:
+                    raise DNIError
+                else:
+                    break;
+            except DNIError as e:
+                print("DNI invalido.Ingrese el DNI nuevamente: ")
+                self.__dni= input()
+                
+        while(True):
+            try:
+                num= int(self.__dni)
+                break
+            except ValueError as e:
+                print("DNI Incorrecto, ingrese el DNI nuevamente (solo numeros): ")
+                self.__dni= input(str())
 
     @dni.setter
     def dni(self,dni):
@@ -158,7 +178,7 @@ class Persona():
     def esMayorDeEdad(self):
         return self.__edad>=18
     
-p1 =Persona ("23a",23,"453454567")
+p1 =Persona ("23a",23,"adad")
 
 
 p1.edad = 30
