@@ -97,9 +97,15 @@ ingresaEntero2()
 print("Ejercicio 6")
 
 class DNIError (Exception):
+    """
+        Este error ocurre cuando el DNI tiene un formato no valido (DNI valido: 9 numeros)
+    """
     pass
 
 class NombreInvalido(Exception):
+    """
+        Este error ocurre cuando el nombre no es valido (solo admite letras)
+    """
     pass
 
 class Persona():
